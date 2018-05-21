@@ -14,7 +14,7 @@ ImgItemPoint = Vue.extend
     return
 
   updated: ->
-    @inputId = @pointData.id
+    # @inputId = @pointData.id
     return
 
 
@@ -28,6 +28,7 @@ ImgItemPoint = Vue.extend
 
     onChangeId: ->
       # @pointData.id = @inputId
+      log @inputId
       @$emit 'changeId', { uid: @pointData.uid, id: @inputId }
 
     onMouseDown: (e)->
