@@ -4,32 +4,36 @@ import ImgItemPoint from './ImgItemPoint'
 
 ImgItem = Vue.extend
   template: document.querySelector '.js-imgItemTmpl'
+
+  components:
+    imgitempoint: ImgItemPoint
+
+  props: [ 'index', 'imgData' ]
+
   data: -> return {
     pointsData: []
     imgURL: ''
     numPoints: 0
-    numAllPoints: 0
+    numAllPointsCnt: 0
     width: 0
     height: 0
   }
+
+  computed:
+    imgStyleObj: -> return {
+      'background-image': "url(#{@imgURL})"
+      width: "#{@width * @scale}px"
+      height: "#{@height * @scale}px"
+    }
+    scale: -> return @$store.state.scale
+
   mounted: ->
     @imgURL = @imgData
+    @inner = @$el.querySelector '.js-inner'
     preloadImg(@imgURL).then (img)=>
       @width = img.width
       @height = img.height
 
-
-  computed:
-    styleObj: ->
-      return {
-        width: "#{@width}px"
-        height: "#{@height}px"
-        'background-image': "url(#{@imgURL})"
-      }
-
-  props: [ 'index', 'imgData' ]
-  components:
-    imgitempoint: ImgItemPoint
 
   methods:
     getData: ->
@@ -42,60 +46,60 @@ ImgItem = Vue.extend
     onIdChanged: (data)->
       index = _.findIndex @pointsData, (d)-> d.uid is data.uid
       @pointsData[index].id = data.id
-      @$emit 'updated'
       return
 
-    onRemoved: (uid)->
-      @remove uid
-      @$emit 'updated'
-      return
+    onRemoved: (uid)-> @remove uid
 
     onDrag: (data)->
       index = _.findIndex @pointsData, (d)-> d.uid is data.uid
       pointData = @pointsData[index]
-      pointData.x = data.x
-      pointData.y = data.y
-      pointData.offsetX = @$el.offsetLeft
-      pointData.offsetY = @$el.offsetTop
-      @$emit 'updated'
+      pointData.x = (data.pageX - @inner.offsetLeft - @$el.offsetLeft) / @scale
+      pointData.y = (data.pageY - @inner.offsetTop - @$el.offsetTop) / @scale
       return
 
     importData: (data)->
       @numPoints = data.length
-      @numAllPoints = data.length
+      @numAllPointsCnt = data.length
       for d, i in data
         @pointsData.push {
           id: d.id
           x: d.x
           y: d.y
           uid: i
-          offestX: @$el.offsetLeft
-          offsetY: @$el.offsetTop
         }
       return
 
     addPoint: (e = null)->
-      @numAllPoints++
-      @numPoints++
+      if e
+        x = (e.pageX - @inner.offsetLeft - @$el.offsetLeft) / @scale
+        y = (e.pageY - @inner.offsetTop - @$el.offsetTop) / @scale
+      else
+        x = @width / 2
+        y = @height / 2
 
-      x = @width / 2
-      y = @height / 2
-
-      id = @numPoints - 1;
+      id = Math.max(@numPoints, (_.max(@pointsData, ((d)-> d.id)).id + 1) || 0);
       @pointsData.push {
         id: id
         x: x
         y: y
-        uid: @numAllPoints
-        offestX: @$el.offsetLeft
-        offsetY: @$el.offsetTop
+        uid: @numAllPointsCnt
       }
-      @$emit 'point'
+      @numAllPointsCnt++
+      @numPoints++
       return
 
     remove: (uid)->
       @pointsData = _.reject @pointsData, (data)-> data.uid is uid
       @numPoints--
+      for child in @$children
+        child.$forceUpdate()
+
+      return
+
+    reset: ->
+      @numPoints = 0
+      @numAllPointsCnt = 0
+      @pointsData = []
       return
 
 export default ImgItem

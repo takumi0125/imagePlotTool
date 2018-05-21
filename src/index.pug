@@ -24,35 +24,68 @@ block script
 //- ここからコンテンツ部分を記述
 block contents
   script(type="text/template").js-imgItemTmpl
-    div.p-imgItem(v-bind:style="styleObj")
-      button.p-imgItem__btnAdd(v-on:click.prevent.stop="addPoint")
-        |Add point
-      span.p-imgItem__num
-        |image index: {{parseInt(index)}}
-      imgitempoint(v-for="pointData, index in pointsData" v-bind:point-data="pointData" v-bind:index="index" v-on:removed="onRemoved" v-on:drag="onDrag" v-on:changeId="onIdChanged")
+    div.p-imgItem
+      header.p-imgItem__header
+        button.p-imgItem__btnAdd(v-on:click.prevent.stop="addPoint()")
+          |Add point
+        span.p-imgItem__num
+          |image index: {{parseInt(index)}}
+      div.p-imgItem__inner.js-inner(
+        v-bind:style="imgStyleObj"
+        v-on:dblclick.prevent.stop="addPoint($event)"
+      )
+        imgitempoint(
+          v-for="pointData, index in pointsData"
+          v-bind:point-data="pointData"
+          v-bind:index="index"
+          v-on:removed="onRemoved"
+          v-on:drag="onDrag"
+          v-on:changeId="onIdChanged"
+        )
 
   script(type="text/template").js-imgItemPointTmpl
-    div.p-item__point(v-bind:style="styleObj")
+    div.p-item__point(v-bind:style="styleObj" v-bind:class="{ 'is-focused': isFocused }")
       span.p-item__dragger(v-on:mousedown="onMouseDown")
-      span.p-item__idLabel
+        span.p-item__draggerBar1(v-bind:style="{ 'background-color': pointColor }")
+        span.p-item__draggerBar2(v-bind:style="{ 'background-color': pointColor }")
+      span.p-item__idLabelContainer(
+        v-bind:class="{ 'is-shown': showId }"
+        v-bind:style="{ 'color': pointColor, 'border-color': pointColor }"
+      )
         |ID:
-        input(v-model="inputId" v-bind:value="pointData.id" v-on:change="onChangeId($event)")
-      button.p-item__btnRemove(v-on:click.prevent.stop="remove")
-        |×
+        input(
+          v-model="inputId"
+          v-on:change="onChangeId($event)"
+          v-on:focus="onFocusId($event)"
+          v-on:blur="onBlurId($event)"
+          v-bind:style="{ 'color': pointColor, 'border-color': pointColor }"
+        )
+        span.p-item__idLabel(
+          v-bind:style="{ 'color': pointColor }"
+        )
+          |{{pointData.id}}
+        button.p-item__btnRemove(
+          v-on:click.prevent.stop="remove"
+          v-bind:style="{ 'color': pointColor, 'border-color': pointColor }"
+        )
+          span.p-item__btnRemoveLabel
+            |×
+
+
 
   div.js-plotTool.p-plotTool(v-bind:class="{ 'has-imgs': hasImgs }")
-    div.p-plotTool__imgDrop(v-if="!hasImgs"  v-on:dragover.stop.prevent="imgsOnDragOver($event)" v-on:drop.stop.prevent="imgsOnDrop($event)")
-
-    button.p-plotTool__btnExport(v-on:click="exportData" v-if="hasImgs")
-      |Export data
-
-    button.p-plotTool__btnImport(v-on:click="openImporter"  v-if="hasImgs")
-      |Import data
-
-    button.p-plotTool__btnReset(v-on:click="reset"  v-if="hasImgs")
-      |Reset
+    div.p-plotTool__imgDrop(
+      v-if="!hasImgs"
+      v-on:dragover.stop.prevent="imgsOnDragOver($event)"
+      v-on:drop.stop.prevent="imgsOnDrop($event)"
+    )
 
     div.p-plotTool__inner
       imgitem(v-for="data, index in imgsData" v-bind:img-data="data" v-bind:index="index")
 
-    div.p-plotTool__importer.js-importer(v-if="isImporterOpened" v-on:dragover.stop.prevent="importerOnDragOver($event)" v-on:drop.stop.prevent="importOnDrop($event)")
+    div.p-plotTool__importer.js-importer(
+      v-if="isImporterOpened"
+      v-on:dragover.stop.prevent="importerOnDragOver($event)"
+      v-on:drop.stop.prevent="importOnDrop($event)"
+      v-on:click.stop.prevent="closeImporter"
+    )

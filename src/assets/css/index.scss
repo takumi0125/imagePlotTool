@@ -55,23 +55,38 @@
 
 .p-plotTool__inner {
   width: 100%;
-  margin-top: 40px;
+  padding-top: 20px;
 }
 
 .p-imgItem {
+  display: inline-block;
   position: relative;
-  background-color: #ccc;
+  margin: 0 0 40px 20px;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #999;
+}
+
+.p-imgItem__inner {
+  box-sizing: content-box;
+  border: 1px solid #ccc;
+  transform-origin: left top;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center center;
-  margin-bottom: 20px;
-  margin-top: 80px;
+  position: relative;
+}
+
+
+.p-imgItem__header {
+  position: relative;
+  height: 45px;
 }
 
 .p-imgItem__num {
   position: absolute;
-  top: -24px;
-  left: 4px;
+  top: 5px;
+  left: 5px;
   color: #000;
   font-size: 12px;
 }
@@ -82,7 +97,7 @@
   font-size: 12px;
   padding: 4px;
   position: absolute;
-  top: -29px;
+  top: 0px;
   left: 110px;
   border-radius: 3px;
   text-align: center;
@@ -99,54 +114,92 @@
   margin-left: -10px;
   margin-top: -10px;
   cursor: pointer;
-
-  &:before, &:after {
-    width: 14px;
-    height: 1px;
-    background-color: #ff0000;
-    @include absoluteCenterVH;
-    content: '';
-  }
-
-  &:after {
-    transform: rotate(90deg);
-  }
 }
 
-.p-item__idLabel {
+.p-item__draggerBar1, .p-item__draggerBar2 {
+  width: 14px;
+  height: 1px;
+  background-color: #ff0000;
+  @include absoluteCenterVH;
+  content: '';
+}
+
+.p-item__draggerBar2 {
+  transform: rotate(90deg);
+}
+
+.p-item__idLabelContainer {
   @include absoluteCenterHT;
   top: 14px;
   white-space: nowrap;
   font-size: 10px;
   vertical-align: middle;
-  padding: 3px;
+  padding: 3px 14px 3px 3px;
   background-color: #fff;
   border-radius: 4px;
+  display: none;
+  border: 1px solid #ff0000;
 
   input {
-    padding: 2px;
-    width: 20px;
+    padding: 2px 2px;
+    width: 30px;
     height: 14px;
     text-align: center;
     font-size: 10px;
     background-color: #fff;
     border: 1px solid #000;
+    @include absoluteCenterVH;
+    opacity: 0;
+  }
+
+  &.is-shown {
+    display: block !important;
+  }
+
+  .is-focused & input {
+    opacity: 1;
+    cursor: inherit;
+    z-index: 3;
+  }
+}
+
+.p-item__idLabel {
+  text-align: center;
+  padding: 1px 2px;
+  width: 20px;
+  height: 14px;
+  font-size: 10px;
+  border: 1px solid transparent;
+
+  .is-focused & {
+    opacity: 0;
   }
 }
 
 .p-item__btnRemove {
-  position: absolute;
+  display: inline-block;
   font-size: 10px;
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid #ff0000;
   padding: 2px;
-  top: -30px;
-  right: -20px;
   width: 14px;
   height: 14px;
   line-height: 9px;
   text-align: center;
-  border-radius: 4px;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 2;
+  top: -8px;
+  right: -8px;
+
+  .is-focused & {
+    display: none;
+  }
+}
+
+.p-item__btnRemoveLabel {
+  position: relative;
+  top: -1px;
 }
 
 .p-plotTool__btnImport,
@@ -197,7 +250,7 @@
   background-color: rgba(0,0,0,0.8);
 
   &:after {
-    content: 'Please drag and drop \AJSON file here.';
+    content: 'Please drag and drop \AJSON file here.\A(click or press ESC key to close)';
     white-space: pre;
     line-height: 1.8;
     color: #fff;
@@ -245,6 +298,22 @@
   text-align: center;
   line-height: 14px;
   border-radius: 4px;
+}
+
+
+.p-loading {
+  @include fixedTopLeft;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  background-color: #fff;
+  transition: opacity 0.2s linear 0.4s,
+              visibility 0.2s linear 0.4s;
+
+  &.is-loaded {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
 

@@ -14,6 +14,8 @@ module.exports = (gulp, gulpPlugins, config, utils)->
       "#{config.srcDir}/#{config.assetsDir}/js/_lib/es6-promise.auto.min.js"
       "#{config.srcDir}/#{config.assetsDir}/js/_lib/underscore-min.js"
       "#{config.srcDir}/#{config.assetsDir}/js/_lib/vue.min.js"
+      "#{config.srcDir}/#{config.assetsDir}/js/_lib/vuex.min.js"
+      "#{config.srcDir}/#{config.assetsDir}/js/_lib/dat.gui.min.js"
     ]
     "#{config.publishDir}/#{config.assetsDir}/js"
     'lib'
