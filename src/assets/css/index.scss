@@ -1,0 +1,254 @@
+@charset "utf-8";
+
+// ==========================================================================
+// Foundation
+// ==========================================================================
+
+@import "_foundation/reset";
+@import "_foundation/fonts";
+@import "_foundation/variables";
+@import "_foundation/mixins";
+@import "_foundation/base";
+
+
+// ==========================================================================
+// Layout
+// ==========================================================================
+
+@import "_layout/base";
+
+
+// ==========================================================================
+// Object
+// ==========================================================================
+
+// ------------------------------------------
+// Component
+// ------------------------------------------
+
+@import "_object/component/base";
+
+
+// ------------------------------------------
+// Project
+// ------------------------------------------
+
+@import "_object/project/base";
+
+.p-plotTool__imgDrop {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  &:after {
+    content: 'Please drag and drop image file(s) here.';
+    white-space: pre;
+    line-height: 1.8;
+    color: #000;
+    font-size: 30px;
+    @include fixedCenterVHT;
+    text-align: center;
+  }
+}
+
+.p-plotTool__inner {
+  width: 100%;
+  margin-top: 40px;
+}
+
+.p-imgItem {
+  position: relative;
+  background-color: #ccc;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
+  margin-bottom: 20px;
+  margin-top: 80px;
+}
+
+.p-imgItem__num {
+  position: absolute;
+  top: -24px;
+  left: 4px;
+  color: #000;
+  font-size: 12px;
+}
+
+.p-imgItem__btnAdd {
+  border: 1px solid #000;
+  background-color: #fff;
+  font-size: 12px;
+  padding: 4px;
+  position: absolute;
+  top: -29px;
+  left: 110px;
+  border-radius: 3px;
+  text-align: center;
+}
+
+.p-item__point {
+  position: absolute;
+}
+
+.p-item__dragger {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin-left: -10px;
+  margin-top: -10px;
+  cursor: pointer;
+
+  &:before, &:after {
+    width: 14px;
+    height: 1px;
+    background-color: #ff0000;
+    @include absoluteCenterVH;
+    content: '';
+  }
+
+  &:after {
+    transform: rotate(90deg);
+  }
+}
+
+.p-item__idLabel {
+  @include absoluteCenterHT;
+  top: 14px;
+  white-space: nowrap;
+  font-size: 10px;
+  vertical-align: middle;
+  padding: 3px;
+  background-color: #fff;
+  border-radius: 4px;
+
+  input {
+    padding: 2px;
+    width: 20px;
+    height: 14px;
+    text-align: center;
+    font-size: 10px;
+    background-color: #fff;
+    border: 1px solid #000;
+  }
+}
+
+.p-item__btnRemove {
+  position: absolute;
+  font-size: 10px;
+  background-color: #fff;
+  padding: 2px;
+  top: -30px;
+  right: -20px;
+  width: 14px;
+  height: 14px;
+  line-height: 9px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.p-plotTool__btnImport,
+.p-plotTool__btnExport,
+.p-plotTool__btnReset {
+  clear: both;
+  width: 320px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 10px;
+  border: 1px solid #000;
+  margin-left: 40px;
+  display: inline-block;
+  margin-top: 40px;
+}
+
+.p-plotTool__select {
+  width: 320px;
+  height: 40px;
+  margin-left: 40px;
+  margin-top: 40px;
+  -webkit-appearance: menulist;
+  box-sizing: border-box;
+  align-items: center;
+  // white-space: pre;
+  -webkit-rtl-ordering: logical;
+  color: black;
+  background-color: white;
+  cursor: default;
+  border-width: 1px;
+  border-style: solid;
+  border-color: initial;
+  border-image: initial;
+  display: inline-block;
+  line-height: 2;
+
+  option {
+    padding: 10px;
+  }
+}
+
+.p-plotTool__importer {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0,0,0,0.8);
+
+  &:after {
+    content: 'Please drag and drop \AJSON file here.';
+    white-space: pre;
+    line-height: 1.8;
+    color: #fff;
+    font-size: 30px;
+    @include absoluteCenterVHT;
+    text-align: center;
+  }
+}
+
+.p-plotTool__checker {
+  border: 1px solid #000;
+  margin-top: 40px;
+  margin-left: 40px;
+  margin-bottom: 40px;
+  width: 800px;
+  height: 800px;
+  position: relative;
+}
+
+.p-plotTool__checkerImg {
+  @include absoluteTopLeft;
+  width: 100%;
+  height: 100%;
+}
+
+.p-plotTool__stepPoint {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ff0000;
+  margin-left: -5px;
+  margin-top: -5px;
+}
+
+.p-plotTool__stepPointId {
+  position: absolute;
+  font-size: 10px;
+  background-color: #fff;
+  padding: 2px;
+  top: -30px;
+  right: -14px;
+  width: 14px;
+  height: 14px;
+  text-align: center;
+  line-height: 14px;
+  border-radius: 4px;
+}
+
+
+// ------------------------------------------
+// Utility
+// ------------------------------------------
+
+@import "_object/utility/base";

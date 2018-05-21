@@ -1,0 +1,58 @@
+//- src/assets/_layout/default.pugを継承
+extends /assets/_layout/default
+
+//- meta設定
+block vars
+  //- 上書き
+  - useTitleSeparater = false
+
+  //- その他変数
+  - bodyClass = 'is-index';  //- bodyタグに付与するクラス
+  - contentsId = 'index'
+
+//- ページ個別のCSS
+block css
+  link(rel="stylesheet", href="/assets/css/index.css")
+
+//- ページ個別のJS(head)
+block scriptHead
+
+//- ページ個別のJS
+block script
+  script(src="/assets/js/index.js")
+
+//- ここからコンテンツ部分を記述
+block contents
+  script(type="text/template").js-imgItemTmpl
+    div.p-imgItem(v-bind:style="styleObj")
+      button.p-imgItem__btnAdd(v-on:click.prevent.stop="addPoint")
+        |Add point
+      span.p-imgItem__num
+        |image index: {{parseInt(index)}}
+      imgitempoint(v-for="pointData, index in pointsData" v-bind:point-data="pointData" v-bind:index="index" v-on:removed="onRemoved" v-on:drag="onDrag" v-on:changeId="onIdChanged")
+
+  script(type="text/template").js-imgItemPointTmpl
+    div.p-item__point(v-bind:style="styleObj")
+      span.p-item__dragger(v-on:mousedown="onMouseDown")
+      span.p-item__idLabel
+        |ID:
+        input(v-model="inputId" v-bind:value="pointData.id" v-on:change="onChangeId($event)")
+      button.p-item__btnRemove(v-on:click.prevent.stop="remove")
+        |×
+
+  div.js-plotTool.p-plotTool(v-bind:class="{ 'has-imgs': hasImgs }")
+    div.p-plotTool__imgDrop(v-if="!hasImgs"  v-on:dragover.stop.prevent="imgsOnDragOver($event)" v-on:drop.stop.prevent="imgsOnDrop($event)")
+
+    button.p-plotTool__btnExport(v-on:click="exportData" v-if="hasImgs")
+      |Export data
+
+    button.p-plotTool__btnImport(v-on:click="openImporter"  v-if="hasImgs")
+      |Import data
+
+    button.p-plotTool__btnReset(v-on:click="reset"  v-if="hasImgs")
+      |Reset
+
+    div.p-plotTool__inner
+      imgitem(v-for="data, index in imgsData" v-bind:img-data="data" v-bind:index="index")
+
+    div.p-plotTool__importer.js-importer(v-if="isImporterOpened" v-on:dragover.stop.prevent="importerOnDragOver($event)" v-on:drop.stop.prevent="importOnDrop($event)")
