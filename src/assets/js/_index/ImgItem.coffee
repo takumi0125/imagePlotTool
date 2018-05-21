@@ -36,6 +36,7 @@ ImgItem = Vue.extend
       data = []
       for child in @$children
         data.push child.getData()
+      data = _.sortBy data, (d)-> d.id
       return data
 
     onIdChanged: (data)->

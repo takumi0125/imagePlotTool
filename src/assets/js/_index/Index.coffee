@@ -1,4 +1,3 @@
-import pad from '../_utils/string/pad'
 import ImgItem from './ImgItem'
 
 export default class Index

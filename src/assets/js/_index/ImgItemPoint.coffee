@@ -10,7 +10,7 @@ ImgItemPoint = Vue.extend
     inputId: ''
   }
   mounted: ->
-    @inputId = @pointData.id
+    @inputId = parseInt(@pointData.id)
     return
 
   updated: ->
@@ -21,7 +21,7 @@ ImgItemPoint = Vue.extend
   methods:
     getData: ->
       return {
-        id: @pointData.id
+        id: parseInt(@pointData.id)
         x: @pointData.x
         y: @pointData.y
       }
