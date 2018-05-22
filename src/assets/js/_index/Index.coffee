@@ -136,6 +136,9 @@ export default class Index
         importOnDrop: (e)->
           @resetAllPlotData()
 
+          if @onKeyDown
+            document.removeEventListener 'keydown', @onKeyDown
+
           file = e.dataTransfer.files[0]
           if !file? or file.type isnt 'application/json'
             alert 'Error. Please drag and drop JSON file.'
@@ -199,14 +202,15 @@ export default class Index
             return
           @isImporterOpened = true
 
-          onKeyDown = (e)=>
+          @onKeyDown = (e)=>
+            log @
             if e.keyCode is 27  # esc key
               @isImporterOpened = false
-              document.removeEventListener 'keydown', onKeyDown
+              document.removeEventListener 'keydown', @onKeyDown
             e.preventDefault()
             return
 
-          document.addEventListener 'keydown', onKeyDown
+          document.addEventListener 'keydown', @onKeyDown
 
 
 

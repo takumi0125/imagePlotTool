@@ -20,6 +20,10 @@ ImgItemPoint = Vue.extend
     pointColor: -> return @$store.state.pointColor
     scale: -> return @$store.state.scale
 
+  updated: ->
+
+    return
+
 
   methods:
     getData: ->
